@@ -1,0 +1,17 @@
+#result{
+  background-color: #58b4ae;
+  color: #fff;
+  font-family: 'Montserrat', ;
+  text-align: center;
+}
+.container-fluid{
+  padding: 5% 15%;
+}
+.white-section{
+  text-align: center;
+  background-color: #c6cbef;
+  padding: 2% 15%;
+}
+i{
+  padding: 2px;
+}
