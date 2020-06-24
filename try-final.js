@@ -1,3 +1,17 @@
+//jaccard_similarity functions
+function textJaccardSimilarity(txt1,txt2,intersect){
+  var length1 = txt1.length;
+  var length2 = txt2.length;
+  var lengthIntersect = intersect.length;
+  var result= lengthIntersect/((length1+length2)-lengthIntersect);
+  console.log(result);
+  return result;
+}
+function getSimilarityScoreJaccard(value){
+    return value.toFixed(3);
+}
+
+//cosineSimilarity functions
 function wordCountMap(words){
   return words.reduce((count, word) => {
         count[word] = (count[word] || 0) + 1;

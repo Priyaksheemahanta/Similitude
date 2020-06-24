@@ -2,7 +2,14 @@
 $con = mysqli_connect("localhost","root","");
 $query=$con->query("SELECT * FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`)");
 $query1=$con->query("SELECT * FROM `try`.`word_try` where w_id<(select MAX(w_id) from `try`.`word_try`)");
-//$query2=$con->query("SELECT words FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`) UNION SELECT words FROM `try`.`word_try`where  w_id<(select MAX(w_id) from `try`.`word_try`)");
+$query2=$con->query("SELECT words FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`) INTERSECT SELECT words FROM `try`.`word_try` where  w_id<(select MAX(w_id) from `try`.`word_try`)");
+
+$json_array_3=array();
+while($row=mysqli_fetch_assoc($query2))
+{
+  $json_array_3[]=$row['words'];
+}
+//echo json_encode($json_array_3);
 
 $json_array_1=array();
 while($row=mysqli_fetch_assoc($query))
@@ -66,7 +73,8 @@ while($row=mysqli_fetch_assoc($query1))
                           <div class="card-panel center">
                               <button class="btn waves-effect waves-light" onclick="checkSimilarity()">Check the similarities!</button>
                               <h5 ><span>The Cosine Similarity: </span><span id="cosine_similarity"></span></h5>
-                                      <h5 ><span>The Jaccard Similarity: </span><span id="similarity1"></span></h5>
+                              <!-- <button class="btn waves-effect waves-light" onclick="checkSimilarityJaccard()">Check the similarities!</button> -->
+                                      <h5 ><span>The Jaccard Similarity: </span><span id="jaccard_similarity"></span></h5>
                                               <h5 ><span>The Euclid Similarity: </span><span id="similarity2"></span></h5>
                           </div>
                       </div>
@@ -92,12 +100,26 @@ while($row=mysqli_fetch_assoc($query1))
       <script src="js/materialize.min.js"></script>
       <script type="text/javascript">
       function checkSimilarity(){
-          var text1 = <?php echo(json_encode($json_array_1)); ?>;
-          var text2 = <?php echo(json_encode($json_array_2)); ?>;
-          var cosine_similarity = getSimilarityScore(textCosineSimilarity(text1,text2));
+          var textA = <?php echo(json_encode($json_array_1)); ?>;
+          var textB = <?php echo(json_encode($json_array_2)); ?>;
+
+          var cosine_similarity = getSimilarityScore(textCosineSimilarity(textA,textB));
           $("#cosine_similarity").text(cosine_similarity);
           console.log(cosine_similarity);
+          var text1 = <?php echo(json_encode($json_array_1)); ?>;
+          var text2 = <?php echo(json_encode($json_array_2)); ?>;
+          var sect = <?php echo(json_encode($json_array_3)); ?>;
+
+          var jaccard_similarity = getSimilarityScoreJaccard(textJaccardSimilarity(text1,text2,sect));
+          $("#jaccard_similarity").text(jaccard_similarity);
+          console.log(cosine_similarity);
       }
+      // function checkSimilarityJaccard(){
+
+      //     var jaccard_similarity = getSimilarityScoreJaccard(textJaccardSimilarity(text1,text2,intersect));
+      //     $("#jaccard_similarity").text(jaccard_similarity);
+      //     console.log(cosine_similarity);
+      // }
       </script>
   </body>
 </html>

@@ -11,7 +11,7 @@
 $con = mysqli_connect("localhost","root","");
 $query=$con->query("SELECT * FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`)");
 $query1=$con->query("SELECT * FROM `try`.`word_try` where w_id<(select MAX(w_id) from `try`.`word_try`)");
-//$query2=$con->query("SELECT words FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`) UNION SELECT words FROM `try`.`word_try`where  w_id<(select MAX(w_id) from `try`.`word_try`)");
+$query2=$con->query("SELECT words FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`) INTERSECT SELECT words FROM `try`.`word_try`where  w_id<(select MAX(w_id) from `try`.`word_try`)");
 
 $json_array_1=array();
 while($row=mysqli_fetch_assoc($query))
@@ -26,6 +26,12 @@ while($row=mysqli_fetch_assoc($query1))
   $json_array_2[]=$row['words'];
 }
 echo json_encode($json_array_2);
+$json_array_3=array();
+while($row=mysqli_fetch_assoc($query2))
+{
+  $json_array_3[]=$row['words'];
+}
+echo json_encode($json_array_3);
 echo '<script>var arrayFromPhp = ' . json_encode($json_array_1) . ';</script>';
 ?>
 <div class="row">
