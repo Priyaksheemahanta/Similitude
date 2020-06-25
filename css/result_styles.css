@@ -4,13 +4,27 @@
   font-family: 'Montserrat', ;
   text-align: center;
 }
+h1{
+  font-family: 'Montserrat';
+  font-weight: 700;
+}
+.simi{
+  color:#ffb367;
+}
+.simi_1{
+  color: #900c3f;
+}
+.previous{
+
+  color:#900c3f;
+}
+
 .container-fluid{
-  padding: 5% 15%;
+  padding: 5% 10%;
 }
 .white-section{
   text-align: center;
   background-color: #c6cbef;
-  padding: 2% 15%;
 }
 i{
   padding: 2px;

@@ -1,8 +1,16 @@
 <?php
 $con = mysqli_connect("localhost","root","");
-$query=$con->query("SELECT * FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`)");
-$query1=$con->query("SELECT * FROM `try`.`word_try` where w_id<(select MAX(w_id) from `try`.`word_try`)");
-$query2=$con->query("SELECT words FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`) INTERSECT SELECT words FROM `try`.`word_try` where  w_id<(select MAX(w_id) from `try`.`word_try`)");
+$query=$con->query("SELECT * FROM `content`.`word` where w_id=(select MAX(w_id) from `content`.`word`)");
+$query1=$con->query("SELECT * FROM `content`.`word` where w_id<(select MAX(w_id) from `content`.`word`)");
+$query2=$con->query("SELECT words FROM `content`.`word` where w_id=(select MAX(w_id) from `content`.`word`) INTERSECT SELECT words FROM `content`.`word` where  w_id<(select MAX(w_id) from `content`.`word`)");
+$query3=$con->query("SELECT words FROM `content`.`word` where w_id=(select MAX(w_id) from `content`.`word`) EXCEPT SELECT words FROM `content`.`word` where  w_id<(select MAX(w_id) from `content`.`word`)");
+
+$json_array_4=array();
+while($row=mysqli_fetch_assoc($query3))
+{
+  $json_array_4[]=$row['words'];
+}
+//echo json_encode($json_array_4);
 
 $json_array_3=array();
 while($row=mysqli_fetch_assoc($query2))
@@ -36,7 +44,7 @@ while($row=mysqli_fetch_assoc($query1))
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="result_styles.css">
+    <link rel="stylesheet" href="css/result_styles.css">
     <!-- fontawesome -->
    <script src="https://kit.fontawesome.com/a4ec4505ee.js" crossorigin="anonymous"></script>
     <!-- java Script -->
@@ -46,7 +54,7 @@ while($row=mysqli_fetch_assoc($query1))
   </head>
   <body>
     <section id="result">
-      <div class="container-fluid">
+      <div class="container-fluid" style="padding-bottom: 31px;">
         <nav class="navbar navbar-expand-lg navbar-dark">
           <a class="navbar-brand" href="index.php">similiTUDE</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,14 +78,20 @@ while($row=mysqli_fetch_assoc($query1))
         <div class="container-fluid">
           <div class="row">
                   <div class="col s12 m12">
+                    <h1><span class="simi">Click Here</span> to check the similarity</h1>
                           <div class="card-panel center">
-                              <button class="btn waves-effect waves-light" onclick="checkSimilarity()">Check the similarities!</button>
-                              <h5 ><span>The Cosine Similarity: </span><span id="cosine_similarity"></span></h5>
-                              <!-- <button class="btn waves-effect waves-light" onclick="checkSimilarityJaccard()">Check the similarities!</button> -->
-                                      <h5 ><span>The Jaccard Similarity: </span><span id="jaccard_similarity"></span></h5>
-                                              <h5 ><span>The Euclid Similarity: </span><span id="similarity2"></span></h5>
-                          </div>
+                              <img src="https://media1.giphy.com/media/452Zx50ny9RDGBCI07/giphy.gif?cid=ecf05e47b116fc7da66238a54d1f0e7b48d6c02c69193042&rid=giphy.gif" height="100px" width="120px"alt="">
+                              <button class="btn waves-effect waves-light" onclick="checkSimilarity() ">Check the similarities!</button>
+                              <div class="container">
+                                <h5 ><span>The Jaccard Similarity:   </span><span class="simi_1" id="jaccard_similarity"></span></h5>
+                                    <h5 ><span>The Cosine Similarity:   </span><span class="simi_1" id="cosine_similarity"></span></h5>
+                                        <h5 ><span>The proposed Approach Similarity:   </span><span class="simi_1" id="proposed_similarity"></span></h5>
+                              </div>
+                              </div>
                       </div>
+          </div>
+          <div  class="previous">
+            <a  class="previous"  href="index.php">Back to the previous page</a>
           </div>
         </div>
     </section>
@@ -100,20 +114,34 @@ while($row=mysqli_fetch_assoc($query1))
       <script src="js/materialize.min.js"></script>
       <script type="text/javascript">
       function checkSimilarity(){
+        //cosineSimilarity
           var textA = <?php echo(json_encode($json_array_1)); ?>;
           var textB = <?php echo(json_encode($json_array_2)); ?>;
 
           var cosine_similarity = getSimilarityScore(textCosineSimilarity(textA,textB));
-          $("#cosine_similarity").text(cosine_similarity);
+          $("#cosine_similarity").text(cosine_similarity+"%");
           console.log(cosine_similarity);
+
+
+        //jaccard_similarity
           var text1 = <?php echo(json_encode($json_array_1)); ?>;
           var text2 = <?php echo(json_encode($json_array_2)); ?>;
-          var sect = <?php echo(json_encode($json_array_3)); ?>;
+          var intersect = <?php echo(json_encode($json_array_3)); ?>;
 
-          var jaccard_similarity = getSimilarityScoreJaccard(textJaccardSimilarity(text1,text2,sect));
-          $("#jaccard_similarity").text(jaccard_similarity);
-          console.log(cosine_similarity);
+          var jaccard_similarity = getSimilarityScore(textJaccardSimilarity(text1,text2,intersect));
+          $("#jaccard_similarity").text(jaccard_similarity+"%");
+          console.log(jaccard_similarity);
+
+
+        //proposed_similarity
+          var text_first = <?php echo(json_encode($json_array_1)); ?>;
+          var except = <?php echo(json_encode($json_array_4)); ?>;
+
+          var proposed_similarity = getSimilarityScore(textProposedSimilarity(text_first,except));
+          $("#proposed_similarity").text(proposed_similarity+"%");
+          console.log(proposed_similarity);
       }
+
       // function checkSimilarityJaccard(){
 
       //     var jaccard_similarity = getSimilarityScoreJaccard(textJaccardSimilarity(text1,text2,intersect));
