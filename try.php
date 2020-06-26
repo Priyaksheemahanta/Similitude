@@ -8,8 +8,14 @@
 
 
 <?php
+
+$input="abc   d        u";
+$words=preg_split("/ +/ ",$input);
+print_r($words);
+
+
 $con = mysqli_connect("localhost","root","");
-$query=$con->query("SELECT * FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`)");
+$query=$con->query("SELECT * FROM `college_project`.`word` where w_id=(select MAX(w_id) from `try`.`word_try`)");
 $query1=$con->query("SELECT * FROM `try`.`word_try` where w_id<(select MAX(w_id) from `try`.`word_try`)");
 $query2=$con->query("SELECT words FROM `try`.`word_try` where w_id=(select MAX(w_id) from `try`.`word_try`) UNION SELECT words FROM `try`.`word_try`where  w_id<(select MAX(w_id) from `try`.`word_try`)");
 

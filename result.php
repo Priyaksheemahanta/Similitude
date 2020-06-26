@@ -1,10 +1,10 @@
 <?php
 $con = mysqli_connect("localhost","root","");
-$query=$con->query("SELECT * FROM `content`.`word` where w_id=(select MAX(w_id) from `content`.`word`)");
-$query1=$con->query("SELECT * FROM `content`.`word` where w_id<(select MAX(w_id) from `content`.`word`)");
-$query2=$con->query("SELECT words FROM `content`.`word` where w_id=(select MAX(w_id) from `content`.`word`) INTERSECT SELECT words FROM `content`.`word` where  w_id<(select MAX(w_id) from `content`.`word`)");
-$query3=$con->query("SELECT words FROM `content`.`word` where w_id=(select MAX(w_id) from `content`.`word`) EXCEPT SELECT words FROM `content`.`word` where  w_id<(select MAX(w_id) from `content`.`word`)");
-
+$query=$con->query("SELECT * FROM `college_project`.`word` where c_pkid=(select MAX(c_pkid) from `college_project`.`word`)");
+$query1=$con->query("SELECT * FROM `college_project`.`word` where c_pkid<(select MAX(c_pkid) from `college_project`.`word`)");
+$query2=$con->query("SELECT words FROM `college_project`.`word` where c_pkid=(select MAX(c_pkid) from`college_project`.`word`) INTERSECT SELECT words FROM `college_project`.`word` where  c_pkid<(select MAX(c_pkid) from `college_project`.`word`)");
+$query3=$con->query("SELECT words FROM `college_project`.`word` where c_pkid=(select MAX(c_pkid) from `college_project`.`word`) EXCEPT SELECT words FROM `college_project`.`word` where  c_pkid<(select MAX(c_pkid) from `college_project`.`word`)");
+                                                                                                                                //minus
 $json_array_4=array();
 while($row=mysqli_fetch_assoc($query3))
 {
@@ -55,89 +55,62 @@ while($row=mysqli_fetch_assoc($query1))
   <body>
     <section id="result">
       <div class="container-fluid" style="padding-bottom: 31px;">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-          <a class="navbar-brand" href="index.php">similiTUDE</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="index.php">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#footer">Contact</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#last">FAQs</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <!-- navbar -->
+        <?php include "navbar.php" ?>
         </div>
         <div class="container-fluid">
           <div class="row">
                   <div class="col s12 m12">
-                    <h1><span class="simi">Click Here</span> to check the similarity</h1>
+                    <h1><span class="simi">Click Here</span> to check the similarities : </h1>
                           <div class="card-panel center">
                               <img src="https://media1.giphy.com/media/452Zx50ny9RDGBCI07/giphy.gif?cid=ecf05e47b116fc7da66238a54d1f0e7b48d6c02c69193042&rid=giphy.gif" height="100px" width="120px"alt="">
                               <button class="btn waves-effect waves-light" onclick="checkSimilarity() ">Check the similarities!</button>
                               <div class="container">
                                 <h5 ><span>The Jaccard Similarity:   </span><span class="simi_1" id="jaccard_similarity"></span></h5>
                                     <h5 ><span>The Cosine Similarity:   </span><span class="simi_1" id="cosine_similarity"></span></h5>
-                                        <h5 ><span>The proposed Approach Similarity:   </span><span class="simi_1" id="proposed_similarity"></span></h5>
+                                        <h5 ><span>The proposed Similarity:   </span><span class="simi_1" id="proposed_similarity"></span></h5>
                               </div>
                               </div>
                       </div>
           </div>
           <div  class="previous">
-            <a  class="previous"  href="index.php">Back to the previous page</a>
+            <a  class="previous"  href="index.php">Back to the previous page </a>
           </div>
         </div>
     </section>
 
 
-      <footer class="white-section" id="footer">
-        <div class="container-fluid">
-
-
-          <i class="footer-logo fab fa-twitter"></i>
-          <i class="footer-logo fab fa-facebook-f"></i>
-          <i class="footer-logo fab fa-instagram"></i>
-          <i class="footer-logo far fa-envelope"></i>
-
-          <p>© Copyright 2020 similiTUDE</p>
-        </div>
+    <!-- navbar -->
+    <?php include "footer.php" ?>
       </footer>
       <script src="js/jquery-3.3.1.js"></script>
       <script src="try-final.js"></script>
       <script src="js/materialize.min.js"></script>
       <script type="text/javascript">
       function checkSimilarity(){
-        //cosineSimilarity
-          var textA = <?php echo(json_encode($json_array_1)); ?>;
-          var textB = <?php echo(json_encode($json_array_2)); ?>;
-
-          var cosine_similarity = getSimilarityScore(textCosineSimilarity(textA,textB));
-          $("#cosine_similarity").text(cosine_similarity+"%");
-          console.log(cosine_similarity);
-
 
         //jaccard_similarity
           var text1 = <?php echo(json_encode($json_array_1)); ?>;
           var text2 = <?php echo(json_encode($json_array_2)); ?>;
           var intersect = <?php echo(json_encode($json_array_3)); ?>;
 
-          var jaccard_similarity = getSimilarityScore(textJaccardSimilarity(text1,text2,intersect));
+          var jaccard_similarity = getSimilarityScoreJaccard(textJaccardSimilarity(text1,text2,intersect));
           $("#jaccard_similarity").text(jaccard_similarity+"%");
           console.log(jaccard_similarity);
 
+        //cosineSimilarity
+          var textA = <?php echo(json_encode($json_array_1)); ?>;
+          var textB = <?php echo(json_encode($json_array_2)); ?>;
+
+          var cosine_similarity = getSimilarityScoreCosine(textCosineSimilarity(textA,textB));
+          $("#cosine_similarity").text(cosine_similarity+"%");
+          console.log(cosine_similarity);
 
         //proposed_similarity
           var text_first = <?php echo(json_encode($json_array_1)); ?>;
           var except = <?php echo(json_encode($json_array_4)); ?>;
 
-          var proposed_similarity = getSimilarityScore(textProposedSimilarity(text_first,except));
+          var proposed_similarity = getSimilarityScoreProposed(textProposedSimilarity(text_first,except));
           $("#proposed_similarity").text(proposed_similarity+"%");
           console.log(proposed_similarity);
       }

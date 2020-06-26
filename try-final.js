@@ -4,34 +4,44 @@ function textJaccardSimilarity(txt1,txt2,intersect){
   var length2 = txt2.length;
   var lengthIntersect = intersect.length;
   var result= lengthIntersect/((length1+length2)-lengthIntersect);//(A#B)/()
-  console.log(result);
+  //console.log(result);
   return result;
+}
+// truncate decimal numbers to decimal places
+function truncate(v, p) {
+    var s = Math.pow(10, p || 0);
+    return Math.trunc(s * v) / s;
+}
+
+//converting the result into percentage
+function getSimilarityScoreJaccard(val){
+    var value= truncate(val, 5)*100;
+    return value;
 }
 // function getSimilarityScoreJaccard(value){
 //     return value.toFixed(4)*100;
 // }
 
 //cosineSimilarity functions
-function wordCountMap(words){
+function countWord(words){
   return words.reduce((count, word) => {
         count[word] = (count[word] || 0) + 1;
-        console.log(count);
+        //console.log(count);
         return count;
         //count: no. of particular word;[count={"the":2,"world":1,.....}]
   }, {})
 }
-function addWordsToDictionary(wordCountmap, dict){
-    for(let key in wordCountmap){
+function addDictionary(countWord, dict){
+    for(let key in countWord){
         dict[key] = true;
     }
 }
 
-function wordMapToVector(map,dict){
+function convoToVector(map,dict){
     let wordCountVector = [];
     for (let term in dict){
         wordCountVector.push(map[term] || 0);
     }
-    console.log(wordCountVector);
     return wordCountVector;
 }
 function dotProduct(vecA, vecB){
@@ -39,7 +49,6 @@ function dotProduct(vecA, vecB){
     for(let i=0;i<vecA.length;i++){
         product += vecA[i] * vecB[i];
     }
-    console.log(product);
     return product;
 }
 
@@ -55,14 +64,25 @@ function cosineSimilarity(vecA,vecB){
     return dotProduct(vecA,vecB)/ (magnitude(vecA) * magnitude(vecB));
 }
 function textCosineSimilarity(txtA,txtB){
-    const wordCountA = wordCountMap(txtA);
-    const wordCountB = wordCountMap(txtB);
+    const textA=txtA.map(v => v.toLowerCase());
+    console.log(textA);
+    const textB=txtB.map(v => v.toLowerCase());
+    //var words=word.map(v => v.toLowerCase());
+    const wordCountA = countWord(textA);
+    const wordCountB = countWord(textB);
     let dict = {};
-    addWordsToDictionary(wordCountA,dict);
-    addWordsToDictionary(wordCountB,dict);
-    const vectorA = wordMapToVector(wordCountA,dict);
-    const vectorB = wordMapToVector(wordCountB,dict);
-    return cosineSimilarity(vectorA, vectorB);
+    addDictionary(wordCountA,dict);
+    addDictionary(wordCountB,dict);
+    const vectorA = convoToVector(wordCountA,dict);
+    const vectorB = convoToVector(wordCountB,dict);
+    const value = cosineSimilarity(vectorA, vectorB);
+    console.log(value);
+    return value;
+}
+//converting the result into percentage
+function getSimilarityScoreCosine(val){
+    var value= truncate(val, 5)*100;
+    return value;
 }
 
 
@@ -83,8 +103,8 @@ function textProposedSimilarity(txt1,except){
   console.log(result);
   return result;
 }
-
 //converting the result into percentage
-function getSimilarityScore(val){
-    return val.toFixed(4)*100;
+function getSimilarityScoreProposed(val){
+    var value= truncate(val, 5)*100;
+    return value;
 }

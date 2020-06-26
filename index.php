@@ -5,21 +5,21 @@ if(isset($_POST['submit'])){
    $name = isset($_POST['name']) ? $_POST['name'] : '';
    $content = isset($_POST['textarea']) ? $_POST['textarea'] : '';
 
-	 $sql = "INSERT INTO `content`.`content` ( `name`, `content`) VALUES ( '$name', '$content');";
+	 $sql = "INSERT INTO `college_project`.`content` ( `name`, `content`) VALUES ( '$name', '$content');";
 
   if($con -> query($sql)==true){
     // echo "successfully inserted";
     $lastid= mysqli_insert_id($con);
-    $result = "SELECT * FROM `content`.`content` where `c_id`= $lastid";
+    $result = "SELECT * FROM `college_project`.`content` where `c_id`= $lastid";
     $sql1=mysqli_query($con, $result);
     while($row = mysqli_fetch_array($sql1) )
     {
       $id=$row['c_id'];
       $cont=$row['content'];
-    $array_of_words=explode(" ",$cont);
+    $array_of_words=preg_split("/ +/ ",$cont);
     foreach($array_of_words as $key)
     {
-    	mysqli_query($con, "INSERT into `content`.`word`(`w_id`,`words`) VALUES('$id','$key');");
+    	mysqli_query($con, "INSERT into `college_project`.`word`(`c_pkid`,`words`) VALUES('$id','$key');");
     //echo	mysqli_error($con);
     }
 
@@ -53,31 +53,13 @@ header('Location: result.php');
     <section class="colored-section" id="title">
       <!-- <img class="bg" src="colorbg.jpeg" alt=""> -->
       <div class="container-fluid">
-        <!-- navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark">
-          <a class="navbar-brand" href="">similiTUDE</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="#footer">Contact</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#features">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#last">FAQs</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
 
+        <!-- navbar -->
+        <?php include "navbar.php" ?>
     <div class="row">
       <div class="col-lg-6 def">
         <h1>Best free <span class="simi">Similarity Checker</span> for your content</h1>
-        <h4 class="def-color"> Now paste upto 2000 words in the text area and click <span class="simi_two">Check for similarity</span> to get instant & accurate results.</h4>
+        <h4 class="def-color"> Now paste upto 200 words in the text area and click <span class="simi_two">Check for similarity</span> to get instant & accurate results.</h4>
 
       </div>
         <div class="container col-lg-6">
@@ -121,7 +103,7 @@ header('Location: result.php');
       <div class="col-lg-4 para">
         <i class="fas fa-copyright icon fa-4x"></i>
         <h3>Cossine similarity</h3>
-        <p>Values range between -1 and 1, where -1 is perfectly dissimilar and 1 is perfectly similar.</p>
+        <p>Values range between 0 and 1, where 0 is perfectly dissimilar and 1 is perfectly similar.</p>
       </div>
       <div class="col-lg-4 para">
         <i class="fas fa-bullseye icon fa-4x"></i>
@@ -129,8 +111,8 @@ header('Location: result.php');
         <p>Values range between 0 and 1, where 0 is perfectly dissimilar and 1 is perfectly similar.</p>
       </div>
       <div class="col-lg-4 para">
-        <i class="fas fa-heart icon fa-4x"></i>
-        <h3>other algorithm</h3>
+        <i class="fab fa-product-hunt"></i>
+        <h3>Proposed algorithm</h3>
         <p>Values range between 0 and 1, where 0 is perfectly dissimilar and 1 is perfectly similar.</p>
       </div>
     </div>
@@ -154,7 +136,12 @@ header('Location: result.php');
       <div class="container-fluid carousel-item">
         <img class="jaccard-image" src="https://image.flaticon.com/icons/png/512/1355/1355248.png" alt="lady-profile">
         <h2 class="testimonial-text">Jaccard Similarity</h2>
-        <h4>The Jaccard Index, also known as the Jaccard similarity coefficient, is a statistic used in understanding the similarities between sample sets. The measurement emphasizes similarity between finite sample sets, and is formally defined as the size of the intersection divided by the size of the union of the sample sets.</h4>
+        <h4>The Jaccard Index is a statistic used in understanding the similarities between sample sets. The measurement emphasizes similarity between finite sample sets, and is formally defined as the size of the intersection divided by the size of the union of the sample sets.</h4>
+      </div>
+      <div class="container-fluid carousel-item">
+        <img class="proposed-image" src="https://image.flaticon.com/icons/svg/2920/2920349.svg" alt="lady-profile">
+        <h2 class="testimonial-text">Proposed Similarity</h2>
+        <h4>The Proposed approach is a statistic used in understanding the similarities between sample sets. This algorithm was proposed on the paper "A New Similarity Measure with Length Factor for Plagiarism Detection" by Dr. Dhruba J. Baruah and Anjana Kakoti Mahanta. </h4>
       </div>
 
     </div>
@@ -169,23 +156,12 @@ header('Location: result.php');
 </section>
 
 
-
-<footer class="white-section" id="footer">
-  <div class="container-fluid">
-
-
-    <i class="footer-logo fab fa-twitter"></i>
-    <i class="footer-logo fab fa-facebook-f"></i>
-    <i class="footer-logo fab fa-instagram"></i>
-    <i class="footer-logo far fa-envelope"></i>
-
-    <p>© Copyright 2020 similiTUDE</p>
-  </div>
-</footer>
-
+<?php
+include "footer.php";
+ ?>
 
 <!-- javascript -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="index.js" charset="utf-8"></script>
+<!-- <script src="index.js" charset="utf-8"></script> -->
   </body>
 </html>
