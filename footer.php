@@ -33,7 +33,7 @@
 
 
         </div>
-<p class="foot">Designed by <span style="color:#fff">Priyakshee</span> and <span style="color:#fff">Abhishek</span> </p>
+<p class="foot">Designed by <span style="color:#fff">Priyakshee</span></p>
     <!-- </div> -->
 
   </footer>

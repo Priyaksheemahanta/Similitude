@@ -102,17 +102,17 @@ header('Location: result.php');
     <div class="row">
       <div class="col-lg-4 para">
         <i class="fas fa-copyright icon fa-4x"></i>
-        <h3>Cossine similarity</h3>
+        <h4>Cossine similarity</h4>
         <p>Values range between 0 and 1, where 0 is perfectly dissimilar and 1 is perfectly similar.</p>
       </div>
       <div class="col-lg-4 para">
         <i class="fas fa-bullseye icon fa-4x"></i>
-        <h3>Jaccard similarity</h3>
+        <h4>Jaccard similarity</h4>
         <p>Values range between 0 and 1, where 0 is perfectly dissimilar and 1 is perfectly similar.</p>
       </div>
       <div class="col-lg-4 para">
-        <i class="fab fa-product-hunt"></i>
-        <h3>Proposed algorithm</h3>
+        <i class="fab fa-product-hunt icon fa-4x"></i>
+        <h4>Proposed algorithm</h4>
         <p>Values range between 0 and 1, where 0 is perfectly dissimilar and 1 is perfectly similar.</p>
       </div>
     </div>
