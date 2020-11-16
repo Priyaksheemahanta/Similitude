@@ -3,7 +3,18 @@
 ## Similarity check with Jaccard, Cosine and other similarity algorithm
 #
 #
-
+# Screenshots:
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img1.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img2.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img3.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img4.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img5.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img6.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img7.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img8.png">
+<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img9.png">
+#
+#
 
 ### OBJECTIVES OF THE SYSTEM
 #####  ANALYZING JACCARD SIMILARITY ALGORITHM
@@ -86,16 +97,5 @@ A-B= {is, a, subset, of}
  This exhibits that content1 is 50% similar to content2.So, it may be
 concluded that the proposed similarity measure yields better result in
 comparison to the other measures. 
-#
-#
-#
-# Screenshots:
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img1.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img2.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img3.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img4.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img5.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img6.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img7.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img8.png">
-<img src="https://github.com/Priyaksheemahanta/Similitude/blob/main/css/img9.png">
+
+
